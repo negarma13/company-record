@@ -1,0 +1,28 @@
+import datetime
+
+class Employee:
+    company = "Sematec"
+
+    def __init__(self,id,firstname,lastname,birthdate):
+        self.id = id
+        self.first_name = firstname
+        self.last_name = lastname
+        self.birth_date = birthdate
+    @property
+    def birth_date(self):
+        return self._birth_date
+
+    @birth_date.setter
+    def birth_date(self,value):
+        self._birth_date = datetime.date.fromisoformat(value)
+
+    def calculate(self):
+        date_now = datetime.date.today()
+        days = (date_now - self._birth_date).days
+        return round( days / 365)
+
+    def to_tuple(self): return (self.first_name,self.last_name,self._birth_date,self.company)
+
+    def __str__(self): return f"{self.first_name} {self.last_name} {self.calculate()} yo"
+
+
