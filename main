@@ -1,0 +1,70 @@
+from ttkbootstrap import Window,Label, Button, Entry, SUCCESS,PRIMARY,N,S,E,W,INFO,Treeview,END
+
+from ttkbootstrap.dialogs import Messagebox
+from Employess import Employee
+
+window = Window("Employees manegment", themename="darkly")
+
+employee_list = []
+employee_list.append(Employee(1,"Armin","yaghoubi","1998-08-27"))
+employee_list.append(Employee(2,"shayan","mah","2015-08-27"))
+employee_list.append(Employee(3,"Armin","yaghoubi","2018-08-27"))
+
+
+
+company_label = Label(window,text="company",bootstyle= SUCCESS)
+company_label.grid(row=0,column=0,pady=10,padx=10)
+company_entry = Entry(window, bootstyle= SUCCESS)
+company_entry.insert(0,Employee.company)
+company_entry.grid(row=0,column=1,padx=10,pady=(0,10),sticky = E+W)
+
+def change_button_clicked():
+    new_company = company_entry.get()
+    Employee.company = new_company
+    load_data()
+
+item_list = []
+def load_data():
+    for item in item_list: table.delete(item)
+    item_list.clear()
+
+    for emp in employee_list:
+        item_list.append(table.insert("", END,text = emp.id, iid= emp.id, values=emp.to_tuple()))
+
+
+
+change_button = Button(window,text="Change", bootstyle=PRIMARY,command=change_button_clicked)
+change_button.grid(row=0,column=2,padx=10,pady=20)
+
+
+def show_information_clicked():
+    employee_id = int(table.selection()[0])
+    employee_selected = filter(lambda employee : employee.id==employee_id,employee_list)
+
+    for item in employee_selected:
+        Messagebox.show_info(title = "Information", message=str(item))
+
+
+
+show_information_button= Button(window,text="Show Information", bootstyle=INFO,command=show_information_clicked)
+show_information_button.grid(row=0,column=3,padx=10,pady=(0,20))
+
+columns=("firstname","lastname","birthdate","company")
+
+
+table = Treeview(window,columns= columns)
+table.grid(row=1,column=1,pady=(0,10),padx=(0,10))
+
+table.heading("#0",text="NO")
+table.heading(columns[0],text="Firstname")
+table.heading(columns[1],text="Lastname")
+table.heading(columns[2],text="Birthdate")
+table.heading(columns[3],text="Company")
+
+for emp in employee_list:
+    table.insert("",END, text=emp.id,iid=emp.id, values=emp.to_tuple(),)
+
+
+
+
+window.mainloop()
